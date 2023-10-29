@@ -4,6 +4,15 @@ class Node {
     this.left = null;
     this.right = null;
   }
+  findNode(key) {
+    if (key === this.key) return this;
+    else if (key < this.key && this.left) {
+      return this.left.findNode(key);
+    } else if (key > this.key && this.right) {
+      return this.right.findNode(key);
+    }
+    return "Data not found in this tree";
+  }
 }
 
 class Tree {
@@ -125,4 +134,5 @@ class Tree {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(10);
 tree.root = tree.deleteNode(tree.root, 23);
+console.log(tree.root.findNode(1));
 tree.prettyPrint();
