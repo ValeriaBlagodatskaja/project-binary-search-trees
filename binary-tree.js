@@ -170,6 +170,34 @@ class Tree {
     return this.findDepthNode(node, current.right, depth + 1); // Search in the right subtree
   }
 
+  isBalancedTree(root) {
+    if (root == null) return true;
+    let leftNode = tree.findHeightNode(root.left);
+    let rightNode = tree.findHeightNode(root.right);
+    if (
+      Math.abs(leftNode - rightNode) <= 1 &&
+      this.isBalancedTree(root.left) == true &&
+      this.isBalancedTree(root.right) == true
+    )
+      return true;
+    return false;
+  }
+
+  // Rebalances an unbalanced tree
+  rebalance() {
+    if (!this.root) {
+      console.log("This tree is empty");
+      return this;
+    }
+    if (!this.isBalancedTree(this.root)) {
+      const treeNodes = this.inOrderNode(this.root, []); // Use in-order to get a sorted list
+      this.root = this.buildTree(treeNodes); // Reconstruct the tree in a balanced way
+      console.log("Tree has been rebalanced.");
+    } else {
+      console.log("This tree is already balanced");
+    }
+  }
+
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -189,15 +217,71 @@ class Tree {
 }
 
 //Test
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-//tree.insert(10);
-tree.root = tree.deleteNode(tree.root, 23);
-//console.log(tree.root.findNode(1));
+
+// 1. Function to generate an array of random numbers
+function generateRandomNumbersArray(length, max = 100) {
+  let arr = [];
+  for (let i = 0; i < length; i++) {
+    arr.push(Math.floor(Math.random() * max));
+  }
+  return arr;
+}
+
+const tree = new Tree(generateRandomNumbersArray(10));
+
+// 2. Confirm if the tree is balanced
+console.log("Initial Tree:");
 tree.prettyPrint();
-//console.log(tree.root.levelOrderNode());
-//console.log("Pre-order Traversal:", tree.preOrderNode(tree.root));
-//console.log("In-order Traversal:", tree.inOrderNode(tree.root));
-//console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
-console.log("Height of the tree:", tree.findHeightNode(tree.root));
-let node5 = tree.root.findNode(5);
-console.log("Depth of the tree:", tree.findDepthNode(node5));
+if (!tree.isBalancedTree(tree, tree.root)) {
+  console.log("Tree is NOT balanced");
+} else {
+  console.log("Tree is balanced");
+}
+
+// 3. Print tree elements
+console.log(
+  "Level-order Traversal:",
+  tree.root.levelOrderNode().map((node) => node.key)
+);
+console.log("Pre-order Traversal:", tree.preOrderNode(tree.root));
+console.log("In-order Traversal:", tree.inOrderNode(tree.root));
+console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
+
+// 4. Unbalance the tree
+console.log("\nUnbalancing the tree:");
+[101, 102, 103, 104, 105].forEach((num) => tree.insert(num));
+tree.prettyPrint();
+
+// Confirm that the tree is unbalanced
+if (!tree.isBalancedTree(tree, tree.root)) {
+  console.log("Tree is NOT balanced");
+} else {
+  console.log("Tree is balanced");
+}
+
+// 5. Rebalance the tree
+console.log("\nRebalancing the tree:");
+tree.rebalance();
+tree.prettyPrint();
+
+// Confirm that the tree is now balanced
+if (!tree.isBalancedTree(tree, tree.root)) {
+  console.log("Tree is NOT balanced after rebalance");
+} else {
+  console.log("Tree is balanced after rebalance");
+}
+
+// Print tree elements again
+console.log(
+  "Level-order Traversal after rebalance:",
+  tree.root.levelOrderNode().map((node) => node.key)
+);
+console.log(
+  "Pre-order Traversal after rebalance:",
+  tree.preOrderNode(tree.root)
+);
+console.log("In-order Traversal after rebalance:", tree.inOrderNode(tree.root));
+console.log(
+  "Post-order Traversal after rebalance:",
+  tree.postOrderNode(tree.root)
+);
