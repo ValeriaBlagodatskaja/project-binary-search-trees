@@ -159,7 +159,16 @@ class Tree {
     return 1 + Math.max(leftHeight, rightHeight);
   }
 
-  findDepthNode() {}
+  findDepthNode(node, current = this.root, depth = 0) {
+    if (!current) return -1; // Node not found in the tree
+
+    if (current === node) return depth; // Node found, return depth
+
+    let leftSearch = this.findDepthNode(node, current.left, depth + 1); // Search in the left subtree
+    if (leftSearch !== -1) return leftSearch; // If node is found in left subtree, return the depth
+
+    return this.findDepthNode(node, current.right, depth + 1); // Search in the right subtree
+  }
 
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -190,3 +199,5 @@ tree.prettyPrint();
 //console.log("In-order Traversal:", tree.inOrderNode(tree.root));
 //console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
 console.log("Height of the tree:", tree.findHeightNode(tree.root));
+let node5 = tree.root.findNode(5);
+console.log("Depth of the tree:", tree.findDepthNode(node5));
