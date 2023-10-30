@@ -4,6 +4,7 @@ class Node {
     this.left = null;
     this.right = null;
   }
+
   findNode(key) {
     if (key === this.key) return this;
     else if (key < this.key && this.left) {
@@ -13,6 +14,25 @@ class Node {
     }
     return "Data not found in this tree";
   }
+
+  levelOrderNode(callback) {
+    let current = this;
+    const queue = [current];
+    const result = [];
+    while (queue.length > 0) {
+      result.push(current);
+      queue.splice(0, 1);
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+      current = queue[0];
+    }
+    if (callback) return callback(result);
+    return result;
+  }
+
+  heightNode(node) {}
+
+  depthNode(node) {}
 }
 
 class Tree {
@@ -112,6 +132,30 @@ class Tree {
     }
   }
 
+  preOrderNode(node, result = []) {
+    if (!node) return;
+    result.push(node.key);
+    this.preOrderNode(node.left, result);
+    this.preOrderNode(node.right, result);
+    return result;
+  }
+
+  inOrderNode(node, result = []) {
+    if (!node) return;
+    this.inOrderNode(node.left, result);
+    result.push(node.key);
+    this.inOrderNode(node.right, result);
+    return result;
+  }
+
+  postOrderNode(node, result = []) {
+    if (!node) return;
+    this.postOrderNode(node.left, result);
+    this.postOrderNode(node.right, result);
+    result.push(node.key);
+    return result;
+  }
+
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -132,7 +176,11 @@ class Tree {
 
 //Test
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-tree.insert(10);
+//tree.insert(10);
 tree.root = tree.deleteNode(tree.root, 23);
-console.log(tree.root.findNode(1));
+//console.log(tree.root.findNode(1));
 tree.prettyPrint();
+//console.log(tree.root.levelOrderNode());
+console.log("Pre-order Traversal:", tree.preOrderNode(tree.root));
+console.log("In-order Traversal:", tree.inOrderNode(tree.root));
+console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
