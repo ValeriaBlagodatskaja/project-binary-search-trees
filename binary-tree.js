@@ -29,10 +29,6 @@ class Node {
     if (callback) return callback(result);
     return result;
   }
-
-  heightNode(node) {}
-
-  depthNode(node) {}
 }
 
 class Tree {
@@ -156,6 +152,15 @@ class Tree {
     return result;
   }
 
+  findHeightNode(node) {
+    if (!node) return -1;
+    const leftHeight = this.findHeightNode(node.left);
+    const rightHeight = this.findHeightNode(node.right);
+    return 1 + Math.max(leftHeight, rightHeight);
+  }
+
+  findDepthNode() {}
+
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -181,6 +186,7 @@ tree.root = tree.deleteNode(tree.root, 23);
 //console.log(tree.root.findNode(1));
 tree.prettyPrint();
 //console.log(tree.root.levelOrderNode());
-console.log("Pre-order Traversal:", tree.preOrderNode(tree.root));
-console.log("In-order Traversal:", tree.inOrderNode(tree.root));
-console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
+//console.log("Pre-order Traversal:", tree.preOrderNode(tree.root));
+//console.log("In-order Traversal:", tree.inOrderNode(tree.root));
+//console.log("Post-order Traversal:", tree.postOrderNode(tree.root));
+console.log("Height of the tree:", tree.findHeightNode(tree.root));
