@@ -171,7 +171,7 @@ class Tree {
   }
 
   isBalancedTree(root) {
-    if (root == null) return true;
+    if (root === null) return true;
     let leftNode = tree.findHeightNode(root.left);
     let rightNode = tree.findHeightNode(root.right);
     if (
